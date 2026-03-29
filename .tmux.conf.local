@@ -408,7 +408,9 @@ set -g mouse on
 bind m run "cut -c3- '#{TMUX_CONF}' | sh -s _toggle_mouse" \; display 'mouse #{?#{mouse},on,off}'
 
 # toggle popup scratch terminal
-bind g display-popup -E -w 80% -h 80% "tmux new-session -A -s scratch"
+# if already inside the scratch session (popup is open), detach to close it
+# otherwise open a new popup attached to the persistent scratch session
+bind g if-shell -F '#{==:#{session_name},scratch}' 'detach-client' 'display-popup -E -w 80% -h 80% "tmux new-session -A -s scratch"'
 
 # move status line to top
 #set -g status-position top
