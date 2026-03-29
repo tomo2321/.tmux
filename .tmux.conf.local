@@ -407,6 +407,9 @@ set -g mouse on
 # display a message after toggling mouse support
 bind m run "cut -c3- '#{TMUX_CONF}' | sh -s _toggle_mouse" \; display 'mouse #{?#{mouse},on,off}'
 
+# toggle popup scratch terminal
+bind g display-popup -E -w 80% -h 80% "tmux new-session -A -s scratch"
+
 # move status line to top
 #set -g status-position top
 
