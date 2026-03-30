@@ -410,7 +410,8 @@ bind m run "cut -c3- '#{TMUX_CONF}' | sh -s _toggle_mouse" \; display 'mouse #{?
 # toggle popup scratch terminal
 # if already inside the scratch session (popup is open), detach to close it
 # otherwise open a new popup attached to the persistent scratch session
-bind g if-shell -F '#{==:#{session_name},scratch}' 'detach-client' 'display-popup -E -w 80% -h 80% "tmux new-session -A -s scratch"'
+# the shell command ensures the scratch session exists, hides its status bar, then attaches
+bind g if-shell -F '#{==:#{session_name},scratch}' 'detach-client' 'display-popup -E -w 80% -h 80% "tmux has-session -t scratch 2>/dev/null || tmux new-session -d -s scratch; tmux set -t scratch status off; tmux attach-session -t scratch"'
 
 # move status line to top
 #set -g status-position top
